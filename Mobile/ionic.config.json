@@ -1,0 +1,8 @@
+{
+  "name": "ionic-app",
+  "integrations": {
+    "capacitor": {},
+    "cordova": {}
+  },
+  "type": "angular-standalone"
+}

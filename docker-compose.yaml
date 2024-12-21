@@ -1,0 +1,47 @@
+services:
+
+  # DATABASE
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-db
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: sportfy
+      MYSQL_PASSWORD: admin
+    networks:
+      - sportfy-network
+
+  # BACKEND
+  backend:
+    container_name: backend
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mysql-db
+    networks:
+      - sportfy-network
+  
+  # MOBILE
+  mobile:
+    container_name: mobile
+    build:
+      context: ./Mobile
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./mobile:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - sportfy-network
+
+networks:
+  sportfy-network:
+    driver: bridge
